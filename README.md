@@ -2,8 +2,6 @@
 
 Esta é uma API RESTful desenvolvida em **NestJS** com **TypeORM** e **PostgreSQL**, que permite o cadastro de produtores rurais, suas fazendas, culturas e geração de indicadores agregados.
 
----
-
 ## 🚀 Como executar
 
 Certifique-se de ter o **Docker** e **Docker Compose** instalados.
