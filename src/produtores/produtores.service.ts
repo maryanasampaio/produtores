@@ -3,6 +3,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Produtor } from './produtor.entity';
 import { CreateProdutorDto } from './dto/create-produtor.dto';
+import { UpdateProdutorDto } from './dto/update-produtor.dto';
+
 
 @Injectable()
 export class ProdutoresService {
@@ -33,7 +35,19 @@ export class ProdutoresService {
   
     return produtor;
   }
+
+  async update(id: string, dto: UpdateProdutorDto): Promise<Produtor> {
+    const produtor = await this.repo.findOneBy({ id });
   
+    if (!produtor) {
+      throw new NotFoundException('Produtor não encontrado');
+    }
+  
+
+    
+    const atualizado = this.repo.merge(produtor, dto);
+    return this.repo.save(atualizado);
+  }
 
   async remove(id: string) {
     const produtor = await this.repo.findOneBy({ id });

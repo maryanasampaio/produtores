@@ -6,15 +6,17 @@ import {
 
 @ValidatorConstraint({ name: 'CpfOuCnpjValido', async: false })
 export class CpfOuCnpjValidator implements ValidatorConstraintInterface {
-  validate(value: string, _args: ValidationArguments) {
+  validate(value: string, _args: ValidationArguments): boolean {
+    if (typeof value !== 'string') return false; 
     return this.validarCPF(value) || this.validarCNPJ(value);
   }
 
-  defaultMessage(_args: ValidationArguments) {
+  defaultMessage(_args: ValidationArguments): string {
     return 'CPF ou CNPJ inválido';
   }
 
   private validarCPF(cpf: string): boolean {
+    if (!cpf) return false;
     cpf = cpf.replace(/[^\d]+/g, '');
     if (cpf.length !== 11 || /^(\d)\1+$/.test(cpf)) return false;
 
@@ -33,6 +35,7 @@ export class CpfOuCnpjValidator implements ValidatorConstraintInterface {
   }
 
   private validarCNPJ(cnpj: string): boolean {
+    if (!cnpj) return false;
     cnpj = cnpj.replace(/[^\d]+/g, '');
     if (cnpj.length !== 14 || /^(\d)\1+$/.test(cnpj)) return false;
 
