@@ -1,12 +1,17 @@
-import { IsArray, IsDecimal, IsNotEmpty, IsString, Matches } from 'class-validator';
-
-const CULTURAS_VALIDAS = ['Soja', 'Milho', 'Algodão', 'Café', 'Cana de Açucar'];
+import {
+  IsArray,
+  IsNotEmpty,
+  IsString,
+  Validate,
+  IsNumber,
+  Min,
+} from 'class-validator';
+import { CpfOuCnpjValidator } from '../validators/cpf-cnpj.validator';
+import { CulturasValidas } from '../validators/culturas.validator';
 
 export class CreateProdutorDto {
   @IsString()
-  @Matches(/^\d{11}$|^\d{14}$/, {
-    message: 'CPF ou CNPJ deve conter 11 ou 14 dígitos numéricos',
-  })
+  @Validate(CpfOuCnpjValidator)
   cpfOuCnpj: string;
 
   @IsNotEmpty()
@@ -21,10 +26,19 @@ export class CreateProdutorDto {
   @IsNotEmpty()
   estado: string;
 
+  @IsNumber()
+  @Min(0)
   areaTotal: number;
+
+  @IsNumber()
+  @Min(0)
   areaAgricultavel: number;
+
+  @IsNumber()
+  @Min(0)
   areaVegetacao: number;
 
   @IsArray()
+  @CulturasValidas()
   culturas: string[];
 }

@@ -6,8 +6,8 @@ services:
     restart: always
     environment:
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: 123456
-      POSTGRES_DB: produtores_db
+      POSTGRES_PASSWORD: 159753
+      POSTGRES_DB: produtores
     ports:
       - "5432:5432"
     volumes:
@@ -26,8 +26,8 @@ services:
       - DB_HOST=db
       - DB_PORT=5432
       - DB_USER=postgres
-      - DB_PASS=123456
-      - DB_NAME=produtores_db
+      - DB_PASS=159753
+      - DB_NAME=produtores
 
 volumes:
   pgdata:
