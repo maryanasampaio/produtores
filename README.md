@@ -29,8 +29,11 @@ http://localhost:3000
 ✅ Criar produtor (POST /produtores)
 
 POST http://localhost:3000/produtores
+
 Content-Type: application/json
+
 json
+```
 {
   "cpfOuCnpj": "12345678900",
   "nomeProdutor": "Maria Oliveira",
@@ -42,6 +45,7 @@ json
   "areaVegetacao": 40,
   "culturas": ["Soja", "Milho"]
 }
+```
 📄 Listar produtores (GET /produtores)
 
 GET http://localhost:3000/produtores
