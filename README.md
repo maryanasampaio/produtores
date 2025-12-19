@@ -10,6 +10,7 @@ Certifique-se de ter o **Docker** e **Docker Compose** instalados.
 
 ```bash
 docker-compose up --build
+```
 
 Isso irá:
 
@@ -74,6 +75,13 @@ Docker & Docker Compose
 ESLint / Prettier / Jest
 
 📦 Instalação manual (sem Docker)
+
+```bash
 npm install
+```
+```
 npm run build
+```
+```
 npm run start:dev
+```
