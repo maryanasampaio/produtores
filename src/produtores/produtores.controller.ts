@@ -1,9 +1,10 @@
-import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put, Query } from '@nestjs/common';
 import { ProdutoresService } from './produtores.service';
 import { CreateProdutorDto } from './dto/create-produtor.dto';
-import { UpdateProdutorDto } from './dto/update-produtor.dto'
-@Controller('produtores')
+import { UpdateProdutorDto } from './dto/update-produtor.dto';
+import { ListProdutoresQueryDto } from './dto/list-produtores-query.dto';
 
+@Controller('produtores')
 export class ProdutoresController {
   constructor(private readonly service: ProdutoresService) {}
 
@@ -13,8 +14,8 @@ export class ProdutoresController {
   }
 
   @Get()
-  findAll() {
-    return this.service.findAll();
+  findAll(@Query() query: ListProdutoresQueryDto) {
+    return this.service.findAll(query);
   }
 
   @Get(':id')
@@ -24,7 +25,7 @@ export class ProdutoresController {
 
   @Put(':id')
   update(@Param('id') id: string, @Body() dto: UpdateProdutorDto) {
-  return this.service.update(id, dto);
+    return this.service.update(id, dto);
   }
 
   @Delete(':id')
