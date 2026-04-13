@@ -12,22 +12,30 @@ services:
       - "5432:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER} -d ${DB_NAME}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   api:
-    build: .
+    build:
+      context: .
+      target: runner
     depends_on:
-      - db
-    volumes:
-      - .:/usr/src/app
-      - /usr/src/app/node_modules # previne sobrescrita local
+      db:
+        condition: service_healthy
     ports:
       - "3000:3000"
     environment:
+      - NODE_ENV=production
       - DB_HOST=db
       - DB_PORT=5432
       - DB_USER=${DB_USER}
       - DB_PASS=${DB_PASS}
       - DB_NAME=${DB_NAME}
+      - THROTTLE_TTL_MS=${THROTTLE_TTL_MS}
+      - THROTTLE_LIMIT=${THROTTLE_LIMIT}
 
 volumes:
   pgdata:

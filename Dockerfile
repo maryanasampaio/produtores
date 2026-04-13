@@ -1,17 +1,25 @@
-FROM node:20
-
-# Adiciona cliente do PostgreSQL
-RUN apt-get update && apt-get install -y postgresql-client
+FROM node:20-slim AS builder
 
 WORKDIR /usr/src/app
 
 COPY package*.json ./
-RUN npm install
+RUN npm ci
 
 COPY . .
 
 RUN npm run build
 
+FROM node:20-slim AS runner
+
+WORKDIR /usr/src/app
+
+ENV NODE_ENV=production
+
+COPY package*.json ./
+RUN npm ci --omit=dev
+
+COPY --from=builder /usr/src/app/dist ./dist
+
 EXPOSE 3000
 
-CMD bash -c "until pg_isready -h db -p 5432 -U postgres; do sleep 1; done && npm run migration:run && npm run start:dev"
+CMD ["npm", "run", "start:prod"]
