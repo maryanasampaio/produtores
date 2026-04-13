@@ -1,6 +1,8 @@
 import { Module } from '@nestjs/common';
+import { APP_GUARD } from '@nestjs/core';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { ProdutoresModule } from './produtores/produtores.module';
 import { IndicadoresModule } from './indicadores/indicadores.module';
 
@@ -25,8 +27,24 @@ import { IndicadoresModule } from './indicadores/indicadores.module';
         migrations: ['dist/migrations/*.js'],
       }),
     }),
+    ThrottlerModule.forRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: (config: ConfigService) => [
+        {
+          ttl: Number(config.get('THROTTLE_TTL_MS') ?? 60000),
+          limit: Number(config.get('THROTTLE_LIMIT') ?? 20),
+        },
+      ],
+    }),
     ProdutoresModule,
     IndicadoresModule,
+  ],
+  providers: [
+    {
+      provide: APP_GUARD,
+      useClass: ThrottlerGuard,
+    },
   ],
 })
 export class AppModule {}
