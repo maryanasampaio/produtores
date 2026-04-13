@@ -1,8 +1,9 @@
 import {
-    Entity, PrimaryGeneratedColumn, Column, DeleteDateColumn,
+    Entity, PrimaryGeneratedColumn, Column, DeleteDateColumn, Index,
     CreateDateColumn, UpdateDateColumn
   } from 'typeorm';
-  
+
+  @Index('IDX_produtores_estado_ativo', ['estado'], { where: '"deletadoEm" IS NULL' })
   @Entity('produtores')
   export class Produtor {
     @PrimaryGeneratedColumn('uuid')
